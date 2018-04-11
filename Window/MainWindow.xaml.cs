@@ -61,6 +61,8 @@ namespace MapEditor
             MapHandle.Instance.ImgPath = dialog.FileNames[0];
             MapHandle.Instance.MapName = "map_001";
 
+            curFilePath = "";    // 清除当前文件保存路径
+
             Init();
 
             // 设置网格大小
