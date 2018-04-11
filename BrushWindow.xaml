@@ -1,0 +1,43 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MapEditor"
+        xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="MapEditor.BrushWindow"
+        mc:Ignorable="d"
+        Title="笔刷管理" Height="300" Width="300" Icon="favicon.ico" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Loaded="Window_Loaded" Closed="Window_Closed">
+    <Grid>
+        <ListView x:Name="Lst" Margin="0" ScrollViewer.HorizontalScrollBarVisibility="Hidden" SelectionMode="Single" HorizontalContentAlignment="Stretch" Padding="-2,0" BorderThickness="0,1,0,0">
+            <ListView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="使用" Click="Use_Click"/>
+                    <MenuItem Header="新建" Click="Add_Click"/>
+                    <MenuItem Header="删除" Click="Del_SelectedItem_Click"/>
+                </ContextMenu>
+            </ListView.ContextMenu>
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="类型" Width="44" DisplayMemberBinding="{Binding Type}"/>
+                    <GridViewColumn Header="颜色" Width="55">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Rectangle Width="23" Height="23" Fill="{Binding Color}" MouseDown="EditColor" Tag="{Binding Type}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="描述" Width="110" DisplayMemberBinding="{Binding Desc}"/>
+                    <GridViewColumn Header="操作" Width="82">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="删除" Width="60" Click="Del_Click" CommandParameter="{Binding Type}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+
+        </ListView>
+
+    </Grid>
+</Window>

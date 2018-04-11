@@ -1,0 +1,19 @@
+﻿<Window x:Class="MapEditor.NewBrushWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MapEditor"
+        mc:Ignorable="d"
+        Title="新建笔刷" Height="230" Width="250" ResizeMode="NoResize" Icon="favicon.ico" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Label Content="类型" HorizontalAlignment="Left" Margin="36,20,0,0" VerticalAlignment="Top"/>        
+        <TextBox x:Name="TxtType" HorizontalAlignment="Left" Height="23" Margin="80,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" VerticalContentAlignment="Center"/>
+        <Label Content="描述" HorizontalAlignment="Left" Margin="36,65,0,0" VerticalAlignment="Top"/>        
+        <TextBox x:Name="TxtDesc" HorizontalAlignment="Left" Height="23" Margin="80,65,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" VerticalContentAlignment="Center"/>
+        <Label Content="颜色" HorizontalAlignment="Left" Margin="36,110,0,0" VerticalAlignment="Top"/>
+        <Rectangle x:Name="ColorPicker" HorizontalAlignment="Left" Height="24" Margin="80,110,0,0" VerticalAlignment="Top" Width="120" Stroke="#FFABADB3" MouseDown="ColorPicker_MouseDown" Fill="Black"/>
+        <Button x:Name="BtnOk" Content="确定" HorizontalAlignment="Center" Margin="0,0,0,15" VerticalAlignment="Bottom" Height="23" Width="76" Click="BtnOk_Click"/>
+
+    </Grid>
+</Window>
