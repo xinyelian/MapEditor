@@ -293,14 +293,15 @@ namespace MapEditor
         // 重置，清除所有单元格信息
         private void CtxMenuItem_Reset_Click(object sender, RoutedEventArgs e)
         {
-            // 弹窗确认
-            MessageBoxResult boxResult = MessageBox.Show("是否清除所有绘制单元格信息？\n（空地图将不会保存，重新导入该地图文件即可恢复。）", "警告", MessageBoxButton.YesNo);
-            if (boxResult == MessageBoxResult.Yes)
+            if (MapHandle.Instance.Data.Count > 0)
             {
-                if (MapHandle.Instance.Data.Count > 0)
+                // 弹窗确认
+                MessageBoxResult boxResult = MessageBox.Show("是否清除所有绘制单元格信息？\n（空地图将不会保存，重新导入该地图文件即可恢复。）", "警告", MessageBoxButton.YesNo);
+                if (boxResult == MessageBoxResult.Yes)
                 {
                     MapHandle.Instance.Data.Clear();
                     CreateMap();
+
                 }
             }
         }
