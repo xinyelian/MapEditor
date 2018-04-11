@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MapEditor"
         mc:Ignorable="d"
-        Title="新建笔刷" Height="230" Width="250" ResizeMode="NoResize" Icon="favicon.ico" WindowStartupLocation="CenterScreen">
+        Title="新建笔刷" Height="230" Width="250" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" Icon="/MapEditor;component/Resources/favicon.ico">
     <Grid>
         <Label Content="类型" HorizontalAlignment="Left" Margin="36,20,0,0" VerticalAlignment="Top"/>        
         <TextBox x:Name="TxtType" HorizontalAlignment="Left" Height="23" Margin="80,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" VerticalContentAlignment="Center"/>

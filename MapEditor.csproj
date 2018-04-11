@@ -14,6 +14,7 @@
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkProfile />
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -26,7 +27,6 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -58,7 +58,7 @@
   <PropertyGroup />
   <PropertyGroup />
   <PropertyGroup>
-    <ApplicationIcon>favicon.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\favicon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup />
   <PropertyGroup />
@@ -108,11 +108,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="BrushWindow.xaml">
+    <Page Include="Window\BrushWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainWindow.xaml">
+    <Page Include="Window\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -120,41 +120,41 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="BrushWindow.xaml.cs">
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Window\BrushWindow.xaml.cs">
       <DependentUpon>BrushWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Brush.cs" />
-    <Compile Include="Cell.cs" />
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="Class\Brush.cs" />
+    <Compile Include="Class\Cell.cs" />
+    <Compile Include="Window\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="NewBrushWindow.xaml">
+    <Page Include="Window\NewBrushWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="OptionWindow.xaml">
+    <Page Include="Window\OptionWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MyColorDialog.cs" />
-    <Compile Include="NewBrushWindow.xaml.cs">
+    <Compile Include="Class\MyColorDialog.cs" />
+    <Compile Include="Window\NewBrushWindow.xaml.cs">
       <DependentUpon>NewBrushWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Setting.cs" />
-    <Compile Include="MapHandle.cs" />
-    <Compile Include="OptionWindow.xaml.cs">
+    <Compile Include="Class\Setting.cs" />
+    <Compile Include="Class\MapHandle.cs" />
+    <Compile Include="Window\OptionWindow.xaml.cs">
       <DependentUpon>OptionWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -163,6 +163,7 @@
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="Properties\app.manifest" />
@@ -175,14 +176,53 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="favicon.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
       <Visible>False</Visible>
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\favicon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\笔刷.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\删除.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\导入.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\设定.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\设置.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\保存.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\文件.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\导出.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\管理.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\使用.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\新建.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\关于.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\重置.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterResolveReferences">

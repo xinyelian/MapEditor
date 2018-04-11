@@ -1,0 +1,77 @@
+﻿<Window x:Class="MapEditor.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MapEditor"
+        mc:Ignorable="d"
+        Title="2D网格地图编辑器" d:DesignWidth="1024" d:DesignHeight="768" Width="1024" Height="768" WindowStartupLocation="CenterScreen" Closing="Window_Closing" KeyDown="Window_KeyDown" KeyUp="Window_KeyUp" Loaded="Window_Loaded" FontSize="14" Icon="/MapEditor;component/Resources/favicon.ico">
+    <DockPanel>
+        <DockPanel DockPanel.Dock="Top">
+            <Menu x:Name="mainMenu" VerticalContentAlignment="Center" Padding="5,0,0,0" Margin="0" Height="Auto" VerticalAlignment="Center" Background="{x:Null}" BorderBrush="#FF3F3F46" BorderThickness="0,0,0,1" DockPanel.Dock="Top">
+                <MenuItem x:Name="MItemStart" Header="文件" FontSize="14" Padding="0,1,6,0" Height="Auto" Cursor="Hand">
+                    <MenuItem.Icon>
+                        <Image Source="/MapEditor;component/Resources/文件.png"/>
+                    </MenuItem.Icon>
+                    <MenuItem Header="新建" Click="MItemNew_Click" Cursor="Hand">
+                        <MenuItem.Icon>
+                            <Image Source="/MapEditor;component/Resources/新建.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="导入" Click="MItemImp_Click" Cursor="Hand">
+                        <MenuItem.Icon>
+                            <Image Source="/MapEditor;component/Resources/导入.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="导出" Click="MItemExp_Click" Cursor="Hand">
+                        <MenuItem.Icon>
+                            <Image Source="/MapEditor;component/Resources/导出.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="保存" Click="MItemSave_Click" Cursor="Hand">
+                        <MenuItem.Icon>
+                            <Image Source="/MapEditor;component/Resources/保存.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="编辑器配置" Click="MItemOpenCfg_Click" Cursor="Hand">
+                        <MenuItem.Icon>
+                            <Image Source="/MapEditor;component/Resources/设定.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </MenuItem>
+                <MenuItem x:Name="MItemSave" Header="保存" Click="MItemSave_Click" FontSize="14" Padding="0,2,6,0" BorderBrush="{x:Null}" Background="{x:Null}" Cursor="Hand">
+                    <MenuItem.Icon>
+                        <Image Source="/MapEditor;component/Resources/保存.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem x:Name="MItemOpt" Header="设置" Click="MItemOpt_Click" FontSize="14" Padding="0,2,6,0" Background="{x:Null}" BorderBrush="{x:Null}" Cursor="Hand">
+                    <MenuItem.Icon>
+                        <Image Source="/MapEditor;component/Resources/设置.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem x:Name="MItemAbt" Header="关于" Click="MItemAbt_Click" HorizontalContentAlignment="Center" Margin="0" VerticalContentAlignment="Center" Padding="0,2,6,0" FontSize="14" Background="{x:Null}" BorderBrush="{x:Null}" Cursor="Hand">
+                    <MenuItem.Icon>
+                        <Image Source="/MapEditor;component/Resources/关于.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+            </Menu>
+            <Menu x:Name="mapMenu" DockPanel.Dock="Top" VerticalContentAlignment="Center" Padding="5,0,0,0" Margin="0" Height="Auto" VerticalAlignment="Center" Background="{x:Null}" BorderBrush="#FF3F3F46" BorderThickness="0,0,0,1">
+                <MenuItem x:Name="MItemBrush" Header="笔刷" Click="Manage_Brush" VerticalAlignment="Center" FontSize="14" Padding="0,2,6,0" VerticalContentAlignment="Center" Cursor="Hand"/>
+                <CheckBox x:Name="CBoxShowGridLine" Content="网格辅助线" Checked="CBoxShowGridLine_Checked" Unchecked="CBoxShowGridLine_Unchecked" FontSize="14" Padding="2,-2,0,0" Background="{x:Null}" Cursor="Hand" BorderThickness="1"/>
+                <DockPanel Name="GridOpacityPanel">
+                    <Label Content="网格透明度" IsHitTestVisible="False" FontSize="14" Padding="0,0,3,0"/>
+                    <Slider x:Name="GridOpacitySlider" Foreground="{x:Null}" BorderBrush="{x:Null}" Background="{x:Null}" Padding="0" Maximum="1" Cursor="Hand" IsHitTestVisible="True" LargeChange="0.1" Width="80" ValueChanged="GridOpacitySlider_ValueChanged"/>
+                </DockPanel>
+            </Menu>
+        </DockPanel>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="0">
+            <ScrollViewer.Effect>
+                <DropShadowEffect/>
+            </ScrollViewer.Effect>
+            <Canvas x:Name="Map" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" OpacityMask="White">
+                <Image x:Name="Img" Canvas.Left="0" Canvas.Top="0" Margin="0" Stretch="None" ScrollViewer.VerticalScrollBarVisibility="Disabled" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <Grid x:Name="Grid" Canvas.Left="0" Canvas.Top="0" Background="Transparent" MouseMove="Grid_MouseMove" MouseLeftButtonDown="Grid_MouseLeftButtonDown" MouseLeftButtonUp="Grid_MouseLeftButtonUp"/>
+            </Canvas>
+        </ScrollViewer>
+    </DockPanel>
+</Window>

@@ -84,5 +84,10 @@ namespace MapEditor
                 Color = (Color)ColorConverter.ConvertFromString(color)
             };
         }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            TxtType.Text = Setting.Instance.GetAutoType().ToString();
+        }
     }
 }

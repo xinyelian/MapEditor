@@ -6,14 +6,26 @@
         xmlns:local="clr-namespace:MapEditor"
         xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="MapEditor.BrushWindow"
         mc:Ignorable="d"
-        Title="笔刷管理" Height="300" Width="300" Icon="favicon.ico" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Loaded="Window_Loaded" Closed="Window_Closed">
+        Title="笔刷管理" Height="300" Width="300" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Loaded="Window_Loaded" Closed="Window_Closed" Icon="/MapEditor;component/Resources/favicon.ico">
     <Grid>
-        <ListView x:Name="Lst" Margin="0" ScrollViewer.HorizontalScrollBarVisibility="Hidden" SelectionMode="Single" HorizontalContentAlignment="Stretch" Padding="-2,0" BorderThickness="0,1,0,0">
+        <ListView x:Name="Lst" Margin="0" ScrollViewer.HorizontalScrollBarVisibility="Hidden" SelectionMode="Single" HorizontalContentAlignment="Stretch" Padding="-2,0" BorderThickness="0,1,0,0" BorderBrush="{x:Null}" Background="{x:Null}" Foreground="Black">
             <ListView.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="使用" Click="Use_Click"/>
-                    <MenuItem Header="新建" Click="Add_Click"/>
-                    <MenuItem Header="删除" Click="Del_SelectedItem_Click"/>
+                    <MenuItem Header="新建" Click="Add_Click">
+                        <MenuItem.Icon>
+                            <Image Source="/MapEditor;component/Resources/新建.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="使用" Click="Use_Click">
+                        <MenuItem.Icon>
+                            <Image Source="/MapEditor;component/Resources/使用.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="删除" Click="Del_SelectedItem_Click">
+                        <MenuItem.Icon>
+                            <Image Source="/MapEditor;component/Resources/删除.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
                 </ContextMenu>
             </ListView.ContextMenu>
             <ListView.View>
@@ -22,7 +34,7 @@
                     <GridViewColumn Header="颜色" Width="55">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <Rectangle Width="23" Height="23" Fill="{Binding Color}" MouseDown="EditColor" Tag="{Binding Type}"/>
+                                <Rectangle Width="23" Height="23" Fill="{Binding Color}" Tag="{Binding Type}" MouseLeftButtonDown="EditColor"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>

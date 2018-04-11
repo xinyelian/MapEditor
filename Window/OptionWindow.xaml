@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MapEditor"
         mc:Ignorable="d"
-        Title="地图设置" Height="262.285" Width="300" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" Loaded="OptWnd_Loaded" Icon="favicon.ico">
+        Title="地图设置" Height="262.285" Width="300" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen" Loaded="OptWnd_Loaded" Icon="/MapEditor;component/Resources/favicon.ico">
     <Grid Margin="0">
         <Label Content="地图宽度：" HorizontalAlignment="Left" Margin="46,42,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="TxtWidth" HorizontalAlignment="Left" Height="23" Margin="111,42,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Text="0" VerticalContentAlignment="Center" IsReadOnly="True"/>

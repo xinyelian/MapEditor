@@ -31,6 +31,17 @@ namespace MapEditor
             Brush[] brushes = new Brush[Setting.Instance.Brushes.Count];
             Setting.Instance.Brushes.Values.CopyTo(brushes, 0);
             Lst.ItemsSource = brushes;
+
+            // 设置当前笔刷所在行高亮
+            for (int i = 0; i < Lst.Items.Count; i++)
+            {
+                Brush b = Lst.Items[i] as Brush;
+                if(b.Type == Setting.Instance.CurBrush.Type)
+                {
+                    Lst.SelectedIndex = i;
+                    break;
+                }
+            }
         }
 
         private void Del_Click(object sender, RoutedEventArgs e)
@@ -55,7 +66,7 @@ namespace MapEditor
         // 删除笔刷
         private void DelBrush(int type)
         {
-            Setting.Instance.RemoveBrush(type.ToString());
+            Setting.Instance.RemoveBrush(type);
             RefreshList();
         }
 
@@ -86,7 +97,7 @@ namespace MapEditor
                 return;
             }
 
-            Setting.Instance.SetCurBrush(Lst.SelectedItem as Brush);
+            Setting.Instance.SetCurBrush((Lst.SelectedItem as Brush).Type);
         }
 
         // 编辑笔刷颜色

@@ -20,9 +20,10 @@ namespace MapEditor
         }
 
         public Action OnBrushModified;
+        public Action OnCurBrushChanged;
 
         public EditorConfig Cfg;
-        private readonly string path = "MapEditorCfg.json";
+        public string FileName;
         private bool isModified = false;    // 配置是否修改
 
         public Dictionary<string, Brush> Brushes
@@ -57,8 +58,15 @@ namespace MapEditor
 
         public void Init()
         {
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.Create);
+            string cfgFolder = Path.Combine(path, "MapEditor");
+            if (!Directory.Exists(cfgFolder))
+                Directory.CreateDirectory(cfgFolder);
+
+            FileName = Path.Combine(cfgFolder, "MapEditorCfg.json");
+
             // 创建默认配置
-            if (!File.Exists(path))
+            if (!File.Exists(FileName))
             {
                 InitDefault();
                 SaveCfg();
@@ -68,7 +76,7 @@ namespace MapEditor
 
             try
             {
-                using (StreamReader reader = File.OpenText(path))
+                using (StreamReader reader = File.OpenText(FileName))
                 {
                     string json = reader.ReadToEnd();
                     Cfg = JsonMapper.ToObject<EditorConfig>(json);
@@ -79,12 +87,12 @@ namespace MapEditor
                 System.Windows.MessageBox.Show("配置文件已损坏,将初始化默认配置！", "错误");
 
                 // 删除损害的配置文件，重新初始化
-                if (File.Exists(path))
-                    File.Delete(path);
+                if (File.Exists(FileName))
+                    File.Delete(FileName);
 
                 Init();
             }
-        
+
             isModified = false;
         }
 
@@ -93,14 +101,10 @@ namespace MapEditor
         {
             get
             {
-                return Cfg.curBrush;
-            }
-            set
-            {
-                if(value != null)
-                    Cfg.curBrush = value;
+                return GetBrush(Cfg.curBrushType);
             }
         }
+
         private void InitDefault()
         {
             Cfg = new EditorConfig
@@ -110,7 +114,7 @@ namespace MapEditor
             Brush brush = new Brush()
             {
                 Type = 1,
-                Color = "#DC143C",
+                Color = "Red",
                 Desc = "不可行走"
             };
             Cfg.brushes[brush.Type.ToString()] = brush;
@@ -129,7 +133,9 @@ namespace MapEditor
                     ColorTranslator.ToWin32(ColorTranslator.FromHtml("#B22222")), // FireBrick 砖红
             };
 
-            CurBrush = brush;  // 设置默认当前笔刷
+            Cfg.gridOpacity = 0.7; // 默认网格透明度
+
+            SetCurBrush(brush.Type);  // 设置默认当前笔刷
         
             isModified = true;
         }
@@ -144,7 +150,7 @@ namespace MapEditor
                     return;
 
                 string json = JsonMapper.ToJson(Cfg);
-                using (StreamWriter writer = File.CreateText(path))
+                using (StreamWriter writer = File.CreateText(FileName))
                 {
                     writer.WriteAsync(json);
                     writer.Flush();
@@ -185,12 +191,24 @@ namespace MapEditor
             return true;
         }
 
-        public void RemoveBrush(string type)
+        public void RemoveBrush(int type)
         {
-            if (!CheckExists(type))
+            if (Brushes.Count <= 1)
+            {
+                System.Windows.MessageBox.Show("至少要保留一个笔刷！", "提示");
+                return;
+            }
+
+            if (type == CurBrush.Type)
+            {
+                System.Windows.MessageBox.Show("当前使用笔刷不能被删除！", "提示");
+                return;
+            }
+
+            if (!CheckExists(type.ToString()))
                 return;
 
-            Brushes.Remove(type);
+            Brushes.Remove(type.ToString());
 
             isModified = true;
 
@@ -202,11 +220,15 @@ namespace MapEditor
             if (!CheckExists(type))
                 return;
 
-            Brushes[type].Color = color;
+            Brush brush = Brushes[type];
+            brush.Color = color;
 
             isModified = true;
 
             OnBrushModified?.Invoke();
+
+            if(brush.Type == CurBrush.Type)
+                OnCurBrushChanged?.Invoke();
         }
 
         public void SetCustomColors(int[] colors)
@@ -215,10 +237,37 @@ namespace MapEditor
             isModified = true;
         }
 
-        public void SetCurBrush(Brush brush)
+        public void SetCurBrush(int type)
         {
-            Cfg.curBrush = brush;
+            Cfg.curBrushType = type.ToString();
             isModified = true;
+            OnCurBrushChanged?.Invoke();
+        }
+
+        // 自动获取类型，取当前最大类型+1
+        public int GetAutoType()
+        {
+            int type = 0;
+            foreach (var item in Brushes.Values)
+            {
+                if (item.Type > type)
+                    type = item.Type;
+            }
+            return ++type;
+        }
+
+        public double GridOpacity
+        {
+            get
+            {
+                return Cfg.gridOpacity;
+            }
+            set
+            {
+                Cfg.gridOpacity = value;
+
+                isModified = true;
+            }
         }
     }
 
@@ -226,7 +275,8 @@ namespace MapEditor
     public class EditorConfig
     {
         public Dictionary<string, Brush> brushes;
-        public Brush curBrush;
+        public string curBrushType;
         public List<int> customColors;
+        public double gridOpacity;
     }
 }
