@@ -12,7 +12,7 @@
                 <Run Background="#FF3F3F46" Foreground="White">【使用指南】</Run>
             </TextBlock>
             <TextBlock DockPanel.Dock="Top"  FontSize="14">
-                <Run Text="   1. 右键地图选择、管理笔刷。"></Run>
+                <Run Text="   1. 右键调出菜单：选择、管理笔刷等。"></Run>
             </TextBlock>
             <TextBlock DockPanel.Dock="Top"  FontSize="14">
                 <Run Text="   2. 按住Ctrl键为擦除模式。"></Run>
@@ -21,10 +21,13 @@
                 <Run Text="   3. 点击鼠标左键刷图或擦除(擦除模式时)单元格。"></Run>
             </TextBlock>
             <TextBlock DockPanel.Dock="Top"  FontSize="14">
-                <Run Text="   4. 按住鼠标左键为连续模式，移动鼠标即可。"></Run>
+                <Run Text="   4. 按住鼠标左键为连续编辑模式，移动鼠标即可。"></Run>
             </TextBlock>
             <TextBlock DockPanel.Dock="Top"  FontSize="14">
-                <Run Text="   5. 导出文件为json格式，存放位置："></Run>
+                <Run Text="   5. 导出地图数据为json格式，默认存放位置与当前应用同级。"></Run>
+            </TextBlock>
+            <TextBlock DockPanel.Dock="Top"  FontSize="14">
+                <Run Text="   6. 编辑器配置为json格式，存放位置："></Run>
             </TextBlock>
             <TextBlock DockPanel.Dock="Top"  FontSize="14">
                 <Run Text="       C:\Users\...\AppData\Local\MapEditor\MapEditorCfg.json"></Run>
