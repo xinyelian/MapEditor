@@ -4,6 +4,24 @@ using System.Windows.Media.Imaging;
 
 namespace MapEditor
 {
+    // 项目数据
+    public class ProjData
+    {
+        public MapData MapData;
+        public string MapImgPath;   // 地图图片路径
+        public int ScaleRate;       // 地图缩放比例 50 表示 50%
+    }
+
+    // 地图数据
+    public class MapData
+    {
+        public string Name;
+        public int Width;
+        public int Height;
+        public int CellSize;
+        public Dictionary<string, Cell> Cells;
+    }
+
     public class MapHandle
     {
         private static MapHandle instance = new MapHandle();
@@ -17,15 +35,24 @@ namespace MapEditor
 
         }
 
-        public bool Edited; // 是否編輯過
-        public string MapName;
-        public int OriginCellSize = 32;
-        public int ScaleRate = 100;
-        public BitmapImage MapImg = null;
-        public string ImgPath = "";
-        public Dictionary<string, Cell> Data = new Dictionary<string, Cell>();
+        public ProjData ProjData;
 
-        public int Width
+        public bool Edited; // 是否編輯過
+        public BitmapImage MapImg = null;
+
+        public MapData MapData
+        {
+            get
+            {
+                if (ProjData == null)
+                    return null;
+
+                return ProjData.MapData;
+            }
+        }
+
+        // 地图图片宽度
+        public int ImgWidth
         {
             get
             {
@@ -33,7 +60,8 @@ namespace MapEditor
             }
         }
 
-        public int Height
+        // 地图图片高度
+        public int ImgHeight
         {
             get
             {
@@ -41,51 +69,61 @@ namespace MapEditor
             }
         }
 
-        public int CellSize
+        // 编辑网格大小
+        public int EditCellSize
         {
             get
             {
-                return OriginCellSize * ScaleRate / 100;
+                return MapData.CellSize * 100 / ProjData.ScaleRate;
             }
         }
 
-        // 导出地图数据
-        public string Export()
+        // 游戏地图实际宽度
+        public int MapWidth
         {
-            if (Data.Count == 0)
-                return null;
-
-            JsonData jsData = new JsonData
+            get
             {
-                ["Cells"] = JsonMapper.ToObject(JsonMapper.ToJson(Data)),
-
-                // 编辑器数据
-                ["Editor"] = new JsonData()
-            };
-            jsData["Editor"]["MapImgPath"] = MapImg.UriSource.AbsolutePath;
-            jsData["Editor"]["OriginCellSize"] = OriginCellSize;
-            jsData["Editor"]["ScaleRate"] = ScaleRate;
-
-            // 其他需要数据
-            jsData["Name"] = MapName;
-            jsData["CellSize"] = CellSize;
-            jsData["Width"] = Width;
-            jsData["Height"] = Height;
-
-            return jsData.ToJson();
+                return ImgWidth * ProjData.ScaleRate / 100;
+            }
         }
 
-        // 导入地图数据
-        public bool Import(JsonData jsData)
+        // 游戏地图实际高度
+        public int MapHeight
+        {
+            get
+            {
+                return ImgHeight * ProjData.ScaleRate / 100;
+            }
+        }
+
+        // 导出纯地图数据，游戏里面用
+        public string ExportMapData()
+        {
+            if (ProjData == null)
+                return null;
+
+            ProjData.MapData.Width = MapWidth;
+            ProjData.MapData.Height = MapHeight;
+            return JsonMapper.ToJson(ProjData.MapData);
+        }
+
+        // 导出工程数据
+        public string ExportProj()
+        {
+            if (ProjData == null)
+                return null;
+
+            ProjData.MapData.Width = MapWidth;
+            ProjData.MapData.Height = MapHeight;
+            return JsonMapper.ToJson(ProjData);
+        }
+
+        // 导入工程数据
+        public bool ImportProj(string jsData)
         {
             try
             {
-                Data = JsonMapper.ToObject<Dictionary<string, Cell>>(jsData["Cells"].ToJson());
-                MapName = jsData["Name"].ToString();
-                ImgPath = jsData["Editor"]["MapImgPath"].ToString();
-                OriginCellSize = int.Parse(jsData["Editor"]["OriginCellSize"].ToString());
-                ScaleRate = int.Parse(jsData["Editor"]["ScaleRate"].ToString());
-
+                ProjData = JsonMapper.ToObject<ProjData>(jsData);  
                 return true;
             }
             catch (System.Exception)
@@ -96,20 +134,36 @@ namespace MapEditor
 
         public void AddCell(Cell cell)
         {
-            if (Data.ContainsKey(cell.Key))
+            if (MapData.Cells.ContainsKey(cell.Key))
                 return;
 
-            Data[cell.Key] = cell;
+            MapData.Cells[cell.Key] = cell;
             Edited = true;
         }
 
         public void RemoveCell(string key)
         {
-            if (!Data.ContainsKey(key))
+            if (!MapData.Cells.ContainsKey(key))
                 return;
 
-            Data.Remove(key);
+            MapData.Cells.Remove(key);
             Edited = true;
+        }
+
+        // 新建工程
+        public void NewProject(string filePath)
+        {
+            ProjData = new ProjData()
+            {
+                MapData = new MapData()
+                {
+                    Name = "map_001",
+                    CellSize = 32,   
+                    Cells = new Dictionary<string, Cell>()
+                },
+                ScaleRate = 100,
+                MapImgPath = filePath
+            };
         }
     }
 }

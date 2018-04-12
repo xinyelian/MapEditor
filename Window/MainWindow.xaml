@@ -9,31 +9,41 @@
     <DockPanel>
         <DockPanel DockPanel.Dock="Top">
             <Menu x:Name="mainMenu" VerticalContentAlignment="Center" Padding="5,0,0,0" Margin="0" Height="Auto" VerticalAlignment="Center" Background="{x:Null}" BorderBrush="#FF3F3F46" BorderThickness="0,0,0,1" DockPanel.Dock="Top">
-                <MenuItem x:Name="MItemStart" Header="文件" FontSize="14" Padding="0,1,6,0" Height="Auto" Cursor="Hand">
+                <MenuItem x:Name="MItemStart" Header="开始" FontSize="14" Padding="0,1,6,0" Height="Auto" Cursor="Hand">
                     <MenuItem.Icon>
-                        <Image Source="/MapEditor;component/Resources/文件.png"/>
+                        <Image Source="/MapEditor;component/Resources/标签.png"/>
                     </MenuItem.Icon>
-                    <MenuItem Header="新建" Click="MItemNew_Click" Cursor="Hand">
+                    <MenuItem Header="新建项目" Click="MItemNew_Click" Cursor="Hand">
                         <MenuItem.Icon>
                             <Image Source="/MapEditor;component/Resources/新建.png"/>
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Header="导入" Click="MItemImp_Click" Cursor="Hand">
+                    <MenuItem Header="导入项目" Click="MItemImp_Click" Cursor="Hand">
                         <MenuItem.Icon>
                             <Image Source="/MapEditor;component/Resources/导入.png"/>
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Header="导出" Click="MItemExp_Click" Cursor="Hand">
+                    <MenuItem Header="导出项目" Click="MItemExp_Click" Cursor="Hand">
                         <MenuItem.Icon>
                             <Image Source="/MapEditor;component/Resources/导出.png"/>
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Header="保存" Click="MItemSave_Click" Cursor="Hand">
+                    <MenuItem Header="保存项目" Click="MItemSave_Click" Cursor="Hand">
                         <MenuItem.Icon>
                             <Image Source="/MapEditor;component/Resources/保存.png"/>
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Header="编辑器配置" Click="MItemOpenCfg_Click" Cursor="Hand">
+                    <MenuItem Header="导出地图数据" Click="MItemExpMap_Click" Cursor="Hand">
+                        <MenuItem.Icon>
+                            <Image Source="/MapEditor;component/Resources/导出.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="项目所在目录" Click="MItemProjFolder_Click" Cursor="Hand">
+                        <MenuItem.Icon>
+                            <Image Source="/MapEditor;component/Resources/文件.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="编辑器配置目录" Click="MItemOpenCfg_Click" Cursor="Hand">
                         <MenuItem.Icon>
                             <Image Source="/MapEditor;component/Resources/设定.png"/>
                         </MenuItem.Icon>

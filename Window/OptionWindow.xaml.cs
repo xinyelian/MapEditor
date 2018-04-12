@@ -33,15 +33,15 @@ namespace MapEditor
             {
                 string name = TxtName.Text.Trim();
                 if (name != "")
-                    MapHandle.Instance.MapName = name;
+                    MapHandle.Instance.MapData.Name = name;
 
                 string cs = TxtCellSize.Text.Trim();
                 if (cs != "")
-                    MapHandle.Instance.OriginCellSize = int.Parse(cs);
+                    MapHandle.Instance.MapData.CellSize = int.Parse(cs);
 
-                string sc = TxtScale.Text.Trim();
+                string sc = CbxScale.Text.Trim();
                 if (sc != "")
-                    MapHandle.Instance.ScaleRate = int.Parse(sc);
+                    MapHandle.Instance.ProjData.ScaleRate = int.Parse(sc);
             }
             Close();
         }
@@ -53,11 +53,11 @@ namespace MapEditor
 
         private void OptWnd_Loaded(object sender, RoutedEventArgs e)
         {
-            TxtName.Text = MapHandle.Instance.MapName;
-            TxtWidth.Text = MapHandle.Instance.Width.ToString();
-            TxtHeight.Text = MapHandle.Instance.Height.ToString();
-            TxtCellSize.Text = MapHandle.Instance.OriginCellSize.ToString();
-            TxtScale.Text = MapHandle.Instance.ScaleRate.ToString();
+            TxtName.Text = MapHandle.Instance.MapData.Name;
+            TxtWidth.Text = MapHandle.Instance.ImgWidth.ToString();
+            TxtHeight.Text = MapHandle.Instance.ImgHeight.ToString();
+            TxtCellSize.Text = MapHandle.Instance.MapData.CellSize.ToString();
+            CbxScale.Text = MapHandle.Instance.ProjData.ScaleRate.ToString();
         }
     }
 }

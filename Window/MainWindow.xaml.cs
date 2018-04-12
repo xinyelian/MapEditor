@@ -14,8 +14,7 @@ namespace MapEditor
 {
     public partial class MainWindow : Window
     {
-        private readonly string defaultFileName = "mapData";
-        private string curFilePath = ""; // 当前编辑的文件        
+        private string projFilePath = ""; // 当前项目文件        
 
         public bool IsLeftMouseDown;
         public bool IsErase;  // 橡皮擦模式
@@ -46,7 +45,6 @@ namespace MapEditor
 
         private void MItemNew_Click(object sender, RoutedEventArgs e)
         {
-
             OpenFileDialog dialog = new OpenFileDialog()
             {
                 Title = "选择地图背景图",
@@ -57,24 +55,28 @@ namespace MapEditor
             bool? ok = dialog.ShowDialog();
             if (ok == false) return;
 
-            MapHandle.Instance.Data.Clear();
-            MapHandle.Instance.ImgPath = dialog.FileNames[0];
-            MapHandle.Instance.MapName = "map_001";
+            // 使用一张图片来新建项目
+            NewProject(dialog.FileNames[0]);
 
-            curFilePath = "";    // 清除当前文件保存路径
-
-            Init();
-
-            // 设置网格大小
+            // 设置参数
             OptionWindow optionWindow = new OptionWindow();
             optionWindow.ShowDialog();
 
+            // 创建地图
             CreateMap();
         }
 
-        private void Init()
+        // 新建项目
+        private void NewProject(string imgFilePath)
+        {            
+            MapHandle.Instance.NewProject(imgFilePath); // 新建工程数据                             
+            InitMap();                                  // 初始化地图背景，网格大小等
+            projFilePath = "";                           // 清除当前文件保存路径   
+        }
+
+        private void InitMap()
         {
-            MapHandle.Instance.MapImg = new BitmapImage(new Uri(MapHandle.Instance.ImgPath));
+            MapHandle.Instance.MapImg = new BitmapImage(new Uri(MapHandle.Instance.ProjData.MapImgPath));
             Img.Source = MapHandle.Instance.MapImg;
             Map.Width = Img.Source.Width;
             Map.Height = Img.Source.Height;
@@ -82,6 +84,7 @@ namespace MapEditor
             Grid.Height = Img.Source.Height;
         }
 
+        // 创建地图
         private void CreateMap()
         {
             CreateGrid(); // 创建网格
@@ -90,7 +93,7 @@ namespace MapEditor
 
             // 画单元格
             Grid.Children.Clear();
-            foreach (var item in MapHandle.Instance.Data)
+            foreach (var item in MapHandle.Instance.MapData.Cells)
             {
                 CreateCell(item.Value);
             }
@@ -110,24 +113,24 @@ namespace MapEditor
             Grid.ColumnDefinitions.Clear();
             Grid.RowDefinitions.Clear();
 
-            for (int x = 0; x < Grid.Width / MapHandle.Instance.CellSize; x++)
+            for (int x = 0; x < Grid.Width / MapHandle.Instance.EditCellSize; x++)
             {
 
                 ColumnDefinition col = new ColumnDefinition()
                 {
-                    Width = new GridLength(MapHandle.Instance.CellSize)
+                    Width = new GridLength(MapHandle.Instance.EditCellSize)
                 };
 
                 Grid.ColumnDefinitions.Add(col);
 
             }
 
-            for (int y = 0; y < Grid.Height / MapHandle.Instance.CellSize; y++)
+            for (int y = 0; y < Grid.Height / MapHandle.Instance.EditCellSize; y++)
             {
                 RowDefinition row = new RowDefinition()
                 {
 
-                    Height = new GridLength(MapHandle.Instance.CellSize),
+                    Height = new GridLength(MapHandle.Instance.EditCellSize),
 
                 };
 
@@ -147,8 +150,8 @@ namespace MapEditor
 
             Rectangle rectangle = new Rectangle()
             {
-                Width = MapHandle.Instance.CellSize,
-                Height = MapHandle.Instance.CellSize,
+                Width = MapHandle.Instance.EditCellSize,
+                Height = MapHandle.Instance.EditCellSize,
                 Fill = new SolidColorBrush(c),
                 Stroke = new SolidColorBrush(Colors.Black),
                 RadiusX = 4,
@@ -169,7 +172,7 @@ namespace MapEditor
 
         private void MItemOpt_Click(object sender, RoutedEventArgs e)
         {
-            if (MapHandle.Instance.MapImg == null)
+            if (MapHandle.Instance.ProjData == null)
                 return;
 
             OptionWindow window = new OptionWindow();
@@ -202,55 +205,50 @@ namespace MapEditor
         // 导出(另存为)
         private void MItemExp_Click(object sender, RoutedEventArgs e)
         {
-            if (MapHandle.Instance.Data == null || MapHandle.Instance.Data.Count <= 0)
+            if (MapHandle.Instance.MapData == null)
                 return;
 
-            SaveFileDialog sf = new Microsoft.Win32.SaveFileDialog()
+            SaveFileDialog sf = new SaveFileDialog()
             {
-                Title = "另存为",
-                Filter = "地图数据(*.json)|*.json",
+                Title = "项目另存为",
+                Filter = "项目文件(*.json)|*.json",
                 RestoreDirectory = true, //保存对话框是否记忆上次打开的目录
                 CheckPathExists = true,  //检查目录
-                FileName = defaultFileName    //默认名
+                FileName = MapHandle.Instance.MapData.Name + "_proj"    //默认名
             };
 
             if (sf.ShowDialog() == true)
             {
-                Save(sf.FileName);
-
-                if (curFilePath != sf.FileName)
-                    curFilePath = sf.FileName;
+                projFilePath = sf.FileName;
+                SaveProj();
             }
         }    
 
         private void MItemSave_Click(object sender, RoutedEventArgs e)
         {
-            ToSave();
+            SaveProj();
         }
 
-        private void ToSave()
+        // 保存工程
+        private void SaveProj()
         {
-            if (curFilePath == "")
-                curFilePath = System.IO.Path.Combine(Environment.CurrentDirectory, defaultFileName + ".json");
-            Save(curFilePath);
-        }
-
-        // 保存
-        private void Save(string filePath)
-        {
-            if (!MapHandle.Instance.Edited || MapHandle.Instance.Data == null || MapHandle.Instance.Data.Count <= 0)
+            if (!MapHandle.Instance.Edited || MapHandle.Instance.ProjData == null)
                 return;
-
-            string jsonData = MapHandle.Instance.Export();
-            if (jsonData == null)
+            
+            string projJson = MapHandle.Instance.ExportProj();
+            if (projJson == null || projJson == "")
             {
-                MessageBox.Show("没有地图数据！", "提示");
+                MessageBox.Show("没有地图工程数据！", "提示");
                 return;
             }
 
-            using (StreamWriter stream = new StreamWriter(filePath))
+            // 保存工程数据
+            if (projFilePath == "")
+                projFilePath = System.IO.Path.Combine(Environment.CurrentDirectory, MapHandle.Instance.MapData.Name + "_proj.json");
+            using (StreamWriter stream = new StreamWriter(projFilePath))
             {
-                stream.Write(jsonData);
+                stream.Write(projJson);
+                stream.Close();
             }
         }
 
@@ -267,18 +265,25 @@ namespace MapEditor
             
             if(dialog.ShowDialog() == true)
             {
-                curFilePath = dialog.FileNames[0];
-                using (StreamReader reader = new StreamReader(curFilePath))
+                projFilePath = dialog.FileNames[0];
+
+                if (!projFilePath.Contains("_proj"))
+                {
+                    MessageBox.Show("不是有效的项目文件类型(_proj)。", "导入失败");
+                    return;
+                }
+
+                using (StreamReader reader = new StreamReader(projFilePath))
                 {
                     string json = reader.ReadToEnd();
-                    JsonData jsonData = JsonMapper.ToObject(json);
-                    bool ok = MapHandle.Instance.Import(jsonData);
+                    bool ok = MapHandle.Instance.ImportProj(json);
                     if (!ok)
                     {
                         MessageBox.Show("【错误原因】\n1.文件格式错误。\n2.没法兼容旧文件版本。", "导入失败");
                         return;
                     }
-                    Init();
+                                        
+                    InitMap();
                     CreateMap();
                 }
             }
@@ -286,22 +291,21 @@ namespace MapEditor
         
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            ToSave();
+            SaveProj();
             Setting.Instance.SaveCfg();
         }
 
         // 重置，清除所有单元格信息
         private void CtxMenuItem_Reset_Click(object sender, RoutedEventArgs e)
         {
-            if (MapHandle.Instance.Data.Count > 0)
+            if (MapHandle.Instance.MapData.Cells.Count > 0)
             {
                 // 弹窗确认
-                MessageBoxResult boxResult = MessageBox.Show("是否清除所有绘制单元格信息？\n空地图将不会保存，重新导入该地图文件即可恢复。", "警告", MessageBoxButton.OKCancel);
+                MessageBoxResult boxResult = MessageBox.Show("是否清除所有绘制单元格信息？\n【保存】之前重新导入该地图文件即可恢复。", "警告", MessageBoxButton.OKCancel);
                 if (boxResult == MessageBoxResult.OK)
                 {
-                    MapHandle.Instance.Data.Clear();
+                    MapHandle.Instance.MapData.Cells.Clear();
                     CreateMap();
-
                 }
             }
         }
@@ -343,11 +347,11 @@ namespace MapEditor
             else
             {
                 Point p = e.GetPosition((IInputElement)sender);
-                int row = (int)p.Y / MapHandle.Instance.CellSize;
-                int col = (int)p.X / MapHandle.Instance.CellSize;
+                int row = (int)p.Y / MapHandle.Instance.EditCellSize;
+                int col = (int)p.X / MapHandle.Instance.EditCellSize;
                 string key = row + "_" + col; 
 
-                if (MapHandle.Instance.Data.ContainsKey(key))
+                if (MapHandle.Instance.MapData.Cells.ContainsKey(key))
                     return;
 
                 Cell cell = new Cell()
@@ -429,10 +433,7 @@ namespace MapEditor
                 };
                 menu.Items.Add(menuItem);
             }
-
-            separator = new Separator();
-            menu.Items.Add(separator);
-
+            
             menuItem = new MenuItem()
             {
                 Header = "笔刷管理",
@@ -444,12 +445,21 @@ namespace MapEditor
             separator = new Separator();
             menu.Items.Add(separator);
 
-            menuItem = new MenuItem() {
+            menuItem = new MenuItem()
+            {
+                Header = "地图设置",
+                Icon = new Image() { Source = new BitmapImage(new Uri("/MapEditor;component/Resources/设置.png", UriKind.RelativeOrAbsolute)) }
+            };
+            menuItem.Click += MItemOpt_Click;
+            menu.Items.Add(menuItem);
+
+            menuItem = new MenuItem()
+            {
                 Header = "重置地图",
-                 Icon = new Image() { Source = new BitmapImage(new Uri("/MapEditor;component/Resources/重置.png", UriKind.RelativeOrAbsolute)) }
+                Icon = new Image() { Source = new BitmapImage(new Uri("/MapEditor;component/Resources/重置.png", UriKind.RelativeOrAbsolute)) }
             };
             menuItem.Click += CtxMenuItem_Reset_Click;
-            menu.Items.Add(menuItem);           
+            menu.Items.Add(menuItem);
 
             if(Grid.ContextMenu != null)
                 Grid.Children.Remove(Grid.ContextMenu);
@@ -475,20 +485,73 @@ namespace MapEditor
             window.ShowDialog();
         }
 
+        // 打开编辑器配置目录
         private void MItemOpenCfg_Click(object sender, RoutedEventArgs e)
         {
-            if (Setting.Instance.FileName == "")
+            if (!File.Exists(Setting.Instance.FileName))
             {
                 MessageBox.Show("没有编辑器配置文件！", "提示");
                 return;
             }
-            System.Diagnostics.Process.Start(Setting.Instance.FileName);
+
+            System.Diagnostics.ProcessStartInfo processStartInfo = new System.Diagnostics.ProcessStartInfo("Explorer.exe")
+            {
+                Arguments = "/e,/select," + Setting.Instance.FileName
+            };
+            System.Diagnostics.Process.Start(processStartInfo);
+        }
+
+        // 打开项目所在目录
+        private void MItemProjFolder_Click(object sender, RoutedEventArgs e)
+        {
+            if (!File.Exists(projFilePath))
+            {
+                MessageBox.Show("当前没有项目！", "提示");
+                return;
+            }
+
+            System.Diagnostics.ProcessStartInfo processStartInfo = new System.Diagnostics.ProcessStartInfo("Explorer.exe")
+            {
+                Arguments = "/e,/select," + projFilePath
+            };
+            System.Diagnostics.Process.Start(processStartInfo);
         }
 
         private void GridOpacitySlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             Setting.Instance.GridOpacity = GridOpacitySlider.Value;
             SetGridOpacity();
+        }
+
+        // 导出地图数据
+        private void MItemExpMap_Click(object sender, RoutedEventArgs e)
+        {
+            if (MapHandle.Instance.ProjData == null)
+                return;
+
+            SaveFileDialog sf = new SaveFileDialog()
+            {
+                Title = "导出地图数据",
+                Filter = "地图数据(*.json)|*.json",
+                FileName = MapHandle.Instance.MapData.Name + "_data"    //默认名
+            };
+
+            if (sf.ShowDialog() == false)
+                return;
+            
+            string mapDataJson = MapHandle.Instance.ExportMapData();
+            if (mapDataJson == null || mapDataJson == "")
+            {
+                MessageBox.Show("没有地图数据！", "提示");
+                return;
+            }
+
+            // 写入              
+            using (StreamWriter stream = new StreamWriter(sf.FileName))
+            {
+                stream.Write(mapDataJson);
+                stream.Close();
+            }        
         }
     }
 }

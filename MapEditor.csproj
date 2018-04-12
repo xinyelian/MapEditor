@@ -231,6 +231,9 @@
   <ItemGroup>
     <Resource Include="Resources\重置.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\标签.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterResolveReferences">
     <ItemGroup>
