@@ -163,8 +163,8 @@ namespace MapEditor
 
         private void MItemAbt_Click(object sender, RoutedEventArgs e)
         {
-            string about = "【如何用】\n1.右键地图选择/管理笔刷。\n2.按住Ctrl键为擦除模式。\n3.点击鼠标左键刷图或擦除（擦除模式时）单元格。\n4.按住鼠标左键为连续模式，移动鼠标即可。\n5.导出文件为json格式,配置存放于[C:\\Users\\...\\AppData\\Local\\MapEditor]。\n\n【开发者】\n张元涛 QQ/WeChat:735162787";
-            MessageBox.Show(about,"关于编辑器");
+            AboutWindow window = new AboutWindow();
+            window.ShowDialog();
         }
 
         private void MItemOpt_Click(object sender, RoutedEventArgs e)
