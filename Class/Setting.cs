@@ -231,6 +231,19 @@ namespace MapEditor
                 OnCurBrushChanged?.Invoke();
         }
 
+        public void ModifyDesc(string type, string desc)
+        {
+            if (!CheckExists(type))
+                return;
+
+            Brush brush = Brushes[type];
+            brush.Desc = desc;
+
+            isModified = true;
+
+            OnBrushModified?.Invoke();
+        }
+
         public void SetCustomColors(int[] colors)
         {
             CustomColors = colors;

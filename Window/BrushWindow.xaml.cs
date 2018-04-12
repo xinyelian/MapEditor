@@ -66,8 +66,12 @@ namespace MapEditor
         // 删除笔刷
         private void DelBrush(int type)
         {
-            Setting.Instance.RemoveBrush(type);
-            RefreshList();
+            MessageBoxResult messageBoxResult = MessageBox.Show("是否删除该笔刷？", "确认", MessageBoxButton.OKCancel);
+            if (messageBoxResult == MessageBoxResult.OK)
+            {
+                Setting.Instance.RemoveBrush(type);
+                RefreshList();
+            }
         }
 
         private void Add_Click(object sender, RoutedEventArgs e)
@@ -130,6 +134,20 @@ namespace MapEditor
         private void Window_Closed(object sender, EventArgs e)
         {
             Setting.Instance.SaveCfg();
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            TextBox textBox = sender as TextBox;
+            string desc = textBox.Text.Trim();
+            if (desc == "")
+            {
+                MessageBox.Show("描述不能为空！", "提示");
+                return;
+            }
+            string type = textBox.Tag.ToString();
+            if (Setting.Instance.Brushes.ContainsKey(type))
+                Setting.Instance.ModifyDesc(type, desc);
         }
     }
 }

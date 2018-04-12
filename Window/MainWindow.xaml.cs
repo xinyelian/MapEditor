@@ -296,8 +296,8 @@ namespace MapEditor
             if (MapHandle.Instance.Data.Count > 0)
             {
                 // 弹窗确认
-                MessageBoxResult boxResult = MessageBox.Show("是否清除所有绘制单元格信息？\n（空地图将不会保存，重新导入该地图文件即可恢复。）", "警告", MessageBoxButton.YesNo);
-                if (boxResult == MessageBoxResult.Yes)
+                MessageBoxResult boxResult = MessageBox.Show("是否清除所有绘制单元格信息？\n空地图将不会保存，重新导入该地图文件即可恢复。", "警告", MessageBoxButton.OKCancel);
+                if (boxResult == MessageBoxResult.OK)
                 {
                     MapHandle.Instance.Data.Clear();
                     CreateMap();
@@ -433,16 +433,6 @@ namespace MapEditor
             separator = new Separator();
             menu.Items.Add(separator);
 
-            menuItem = new MenuItem() {
-                Header = "重置地图",
-                 Icon = new Image() { Source = new BitmapImage(new Uri("/MapEditor;component/Resources/重置.png", UriKind.RelativeOrAbsolute)) }
-            };
-            menuItem.Click += CtxMenuItem_Reset_Click;
-            menu.Items.Add(menuItem);
-
-            separator = new Separator();
-            menu.Items.Add(separator);
-
             menuItem = new MenuItem()
             {
                 Header = "笔刷管理",
@@ -450,6 +440,16 @@ namespace MapEditor
             };
             menuItem.Click += Manage_Brush;
             menu.Items.Add(menuItem);
+
+            separator = new Separator();
+            menu.Items.Add(separator);
+
+            menuItem = new MenuItem() {
+                Header = "重置地图",
+                 Icon = new Image() { Source = new BitmapImage(new Uri("/MapEditor;component/Resources/重置.png", UriKind.RelativeOrAbsolute)) }
+            };
+            menuItem.Click += CtxMenuItem_Reset_Click;
+            menu.Items.Add(menuItem);           
 
             if(Grid.ContextMenu != null)
                 Grid.Children.Remove(Grid.ContextMenu);

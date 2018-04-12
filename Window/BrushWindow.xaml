@@ -9,6 +9,11 @@
         Title="笔刷管理" Height="300" Width="300" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Loaded="Window_Loaded" Closed="Window_Closed" Icon="/MapEditor;component/Resources/favicon.ico">
     <Grid>
         <ListView x:Name="Lst" Margin="0" ScrollViewer.HorizontalScrollBarVisibility="Hidden" SelectionMode="Single" HorizontalContentAlignment="Stretch" Padding="-2,0" BorderThickness="0,1,0,0" BorderBrush="{x:Null}" Background="{x:Null}" Foreground="Black">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="{x:Type ListViewItem}">
+                    <Setter Property="HorizontalContentAlignment" Value="Center" />
+                </Style>
+            </ListView.ItemContainerStyle>
             <ListView.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="新建" Click="Add_Click">
@@ -30,15 +35,21 @@
             </ListView.ContextMenu>
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="类型" Width="44" DisplayMemberBinding="{Binding Type}"/>
-                    <GridViewColumn Header="颜色" Width="55">
+                    <GridViewColumn Header="类型" Width="40" DisplayMemberBinding="{Binding Type}"/>
+                    <GridViewColumn Header="颜色" Width="50">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <Rectangle Width="23" Height="23" Fill="{Binding Color}" Tag="{Binding Type}" MouseLeftButtonDown="EditColor"/>
+                                <Rectangle Width="22" Height="22" Fill="{Binding Color}" Tag="{Binding Type}" MouseLeftButtonDown="EditColor"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="描述" Width="110" DisplayMemberBinding="{Binding Desc}"/>
+                    <GridViewColumn Header="描述" Width="115">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox TextChanged="TextBox_TextChanged" Tag="{Binding Type}" Text="{Binding Desc}" Width="103" Height="20" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                     <GridViewColumn Header="操作" Width="82">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
