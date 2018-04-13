@@ -71,7 +71,7 @@ namespace MapEditor
         {            
             MapHandle.Instance.NewProject(imgFilePath); // 新建工程数据                             
             InitMap();                                  // 初始化地图背景，网格大小等
-            projFilePath = "";                           // 清除当前文件保存路径   
+            projFilePath = "";                          // 清除当前文件保存路径              
         }
 
         private void InitMap()
@@ -249,6 +249,8 @@ namespace MapEditor
             {
                 stream.Write(projJson);
                 stream.Close();
+
+                MapHandle.Instance.Edited = false;
             }
         }
 

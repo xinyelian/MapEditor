@@ -123,7 +123,8 @@ namespace MapEditor
         {
             try
             {
-                ProjData = JsonMapper.ToObject<ProjData>(jsData);  
+                ProjData = JsonMapper.ToObject<ProjData>(jsData);
+                Edited = true;
                 return true;
             }
             catch (System.Exception)
@@ -164,6 +165,7 @@ namespace MapEditor
                 ScaleRate = 100,
                 MapImgPath = filePath
             };
+            Edited = true;
         }
     }
 }

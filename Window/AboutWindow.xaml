@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MapEditor"
         mc:Ignorable="d"
-        Title="关于编辑器" Height="290" Width="470" Icon="/MapEditor;component/Resources/favicon.ico" Margin="0,-4,0,0" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
-    <Grid Margin="20,15,20,20">
+        Title="关于编辑器" Height="360" Width="465" Icon="/MapEditor;component/Resources/favicon.ico" Margin="0,-4,0,0" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+    <Grid Margin="20,15,20,15">
         <DockPanel>
             <TextBlock DockPanel.Dock="Top"  FontSize="14" Margin="0,0,0,3" Padding="0">
                 <Run Background="#FF3F3F46" Foreground="White">【使用指南】</Run>
@@ -24,16 +24,25 @@
                 <Run Text="   4. 按住鼠标左键为连续编辑模式，移动鼠标即可。"></Run>
             </TextBlock>
             <TextBlock DockPanel.Dock="Top"  FontSize="14">
-                <Run Text="   5. 导出地图数据为json格式，默认存放位置与当前应用同级。"></Run>
+                <Run Text="   5. 项目文件默认保存位置与当前应用平级，带'_proj'后缀。"></Run>
             </TextBlock>
             <TextBlock DockPanel.Dock="Top"  FontSize="14">
-                <Run Text="   6. 编辑器配置为json格式，存放位置："></Run>
+                <Run Text="   6. 导出地图数据为json格式，默认带'_data'后缀。"></Run>
+            </TextBlock>         
+            <TextBlock DockPanel.Dock="Top"  FontSize="14" Margin="0,15,0,3" Padding="0">
+                <Run Background="#FF3F3F46" Foreground="White">【功能介绍】</Run>
             </TextBlock>
             <TextBlock DockPanel.Dock="Top"  FontSize="14">
-                <Run Text="       C:\Users\...\AppData\Local\MapEditor\MapEditorCfg.json"></Run>
+                <Run Text="   1. 该编辑器适用于正方形网格地图。"></Run>
             </TextBlock>
+            <TextBlock DockPanel.Dock="Top"  FontSize="14">
+                <Run Text="   2. 编辑每个地图网格的类型，并指定笔刷来绘制颜色。"></Run>
+            </TextBlock>
+            <TextBlock DockPanel.Dock="Top"  FontSize="14">
+                <Run Text="   3. 游戏逻辑解析类型决定网格属性：不可行走、穿透、NPC等。"></Run>
+            </TextBlock>          
             <TextBlock DockPanel.Dock="Top"  FontSize="14" Margin="0,15,0,3">
-                <Run Background="#FF3F3F46" Foreground="White">【开发者】</Run>
+                <Run Background="#FF3F3F46" Foreground="White">【开发人员】</Run>
             </TextBlock>
             <TextBlock DockPanel.Dock="Top"  FontSize="14">
                 <Run Text="    张元涛"></Run>
