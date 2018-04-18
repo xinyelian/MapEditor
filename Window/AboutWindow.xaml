@@ -45,7 +45,7 @@
                 <Run Background="#FF3F3F46" Foreground="White">【开发人员】</Run>
             </TextBlock>
             <TextBlock DockPanel.Dock="Top"  FontSize="14">
-                <Run Text="    张元涛"></Run>
+                <Run Text="    张元涛   开发起始：2018/4/4"></Run>
             </TextBlock>
             <TextBlock DockPanel.Dock="Top"  FontSize="14">
                 <Run Text="    QQ/WeChat:735162787"></Run>

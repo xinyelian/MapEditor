@@ -74,7 +74,14 @@
                 </DockPanel>
             </Menu>
         </DockPanel>
-        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="0">
+        <DockPanel Background="#FF3F3F46">
+            <DockPanel Width="200"  Margin="0,0,1,0" Background="White">
+                <DockPanel VerticalAlignment="Top" Margin="5" DockPanel.Dock="Top">
+                    <Label Content="类型：" BorderBrush="#FF3F3F46"/>
+                    <TextBox Text="1" VerticalContentAlignment="Center"></TextBox>
+                </DockPanel>               
+            </DockPanel>
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="0" DockPanel.Dock="Right" Background="White">
             <ScrollViewer.Effect>
                 <DropShadowEffect/>
             </ScrollViewer.Effect>
@@ -82,6 +89,7 @@
                 <Image x:Name="Img" Canvas.Left="0" Canvas.Top="0" Margin="0" Stretch="None" ScrollViewer.VerticalScrollBarVisibility="Disabled" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                 <Grid x:Name="Grid" Canvas.Left="0" Canvas.Top="0" Background="Transparent" MouseMove="Grid_MouseMove" MouseLeftButtonDown="Grid_MouseLeftButtonDown" MouseLeftButtonUp="Grid_MouseLeftButtonUp"/>
             </Canvas>
-        </ScrollViewer>
+            </ScrollViewer>
+        </DockPanel>
     </DockPanel>
 </Window>

@@ -22,6 +22,12 @@ namespace MapEditor
         public Dictionary<string, Cell> Cells;
     }
 
+    
+    public class GameData
+    {
+
+    }
+
     public class MapHandle
     {
         private static MapHandle instance = new MapHandle();

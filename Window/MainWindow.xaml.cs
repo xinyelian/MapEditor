@@ -155,13 +155,19 @@ namespace MapEditor
                 Fill = new SolidColorBrush(c),
                 Stroke = new SolidColorBrush(Colors.Black),
                 RadiusX = 4,
-                RadiusY = 4,
-            };
-            
+                RadiusY = 4,               
+            };            
+
             Grid.Children.Add(rectangle);
             Grid.SetRow((UIElement)rectangle, cell.y);
             Grid.SetColumn((UIElement)rectangle, cell.x);
             MapHandle.Instance.AddCell(cell);
+        }
+
+        // 显示属性面板
+        private void ShowCellPropertyWindow()
+        {
+            //cellPropWnd.Show();
         }
 
         private void MItemAbt_Click(object sender, RoutedEventArgs e)
@@ -351,10 +357,14 @@ namespace MapEditor
                 Point p = e.GetPosition((IInputElement)sender);
                 int row = (int)p.Y / MapHandle.Instance.EditCellSize;
                 int col = (int)p.X / MapHandle.Instance.EditCellSize;
-                string key = row + "_" + col; 
+                string key = row + "_" + col;
 
                 if (MapHandle.Instance.MapData.Cells.ContainsKey(key))
+                {
+                    // 显示属性面板
+                    ShowCellPropertyWindow();
                     return;
+                }
 
                 Cell cell = new Cell()
                 {
